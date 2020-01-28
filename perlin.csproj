@@ -4,7 +4,14 @@
         <TargetFramework>netcoreapp3.0</TargetFramework>
         <RootNamespace></RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageId>Matyasf.Perlin</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Matyas Forian Szabo</Authors>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Src\Assets\RobotoMono-Regular.ttf" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-unstable0418" />
@@ -15,15 +22,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Src\Assets\RobotoMono-Regular.ttf">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Src\Assets\Shaders\sprite.frag.spv">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Src\Assets\Shaders\sprite.vert.spv">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+      <EmbeddedResource Include="Src\Assets\RobotoMono-Regular.ttf" />
+      <EmbeddedResource Include="Src\Assets\Shaders\sprite.frag.spv" />
+      <EmbeddedResource Include="Src\Assets\Shaders\sprite.vert.spv" />
     </ItemGroup>
 
 </Project>

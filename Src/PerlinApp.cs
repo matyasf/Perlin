@@ -61,8 +61,7 @@ namespace Perlin
             {
                 if (_fontRobotoMono == null)
                 {
-                    _fontRobotoMono = Fonts.Install(Path.Combine(
-                        AppContext.BaseDirectory, "Perlin", "Assets", "RobotoMono-Regular.ttf"));
+                    _fontRobotoMono = Fonts.Install(PerlinUtils.LoadEmbeddedResourceAsString("RobotoMono-Regular.ttf"));
                 }
                 return _fontRobotoMono;
             }

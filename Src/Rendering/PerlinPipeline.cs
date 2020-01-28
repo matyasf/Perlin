@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using Veldrid;
 using Veldrid.SPIRV;
 
@@ -48,16 +46,11 @@ namespace Perlin.Rendering
                             new VertexElementDescription("TextureSubRegion", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float4))
                     },
                     factory.CreateFromSpirv(
-                        new ShaderDescription(ShaderStages.Vertex, LoadShaderBytes("sprite.vert.spv"), "main"),
-                        new ShaderDescription(ShaderStages.Fragment, LoadShaderBytes("sprite.frag.spv"), "main"),
+                        new ShaderDescription(ShaderStages.Vertex, PerlinUtils.LoadEmbeddedResourceAsByte("Shaders.sprite.vert.spv"), "main"),
+                        new ShaderDescription(ShaderStages.Fragment, PerlinUtils.LoadEmbeddedResourceAsByte("Shaders.sprite.frag.spv"), "main"),
                         new CrossCompileOptions(false, false, new SpecializationConstant(0, false)))),
                 new[] { orthoLayout, TexLayout },
                 gd.MainSwapchain.Framebuffer.OutputDescription));
-        }
-        
-        private static byte[] LoadShaderBytes(string name)
-        {
-            return File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "Perlin", "Assets", "Shaders", name));
         }
     }
 }
