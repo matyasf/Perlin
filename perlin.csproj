@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <RootNamespace></RootNamespace>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-unstable0418" />
+      <PackageReference Include="Veldrid" Version="4.7.0" />
+      <PackageReference Include="Veldrid.ImageSharp" Version="4.7.0" />
+      <PackageReference Include="Veldrid.SPIRV" Version="1.0.12" />
+      <PackageReference Include="Veldrid.StartupUtilities" Version="4.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Src\Assets\RobotoMono-Regular.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Src\Assets\Shaders\sprite.frag.spv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Src\Assets\Shaders\sprite.vert.spv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>
