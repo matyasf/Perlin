@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Perlin
 {
-    internal class PerlinUtils
+    internal static class PerlinUtils
     {
 
         private const string ResourcePrefix = "Src.Assets.";
