@@ -9,6 +9,7 @@ Perlin (named from a [bird](https://en.wikipedia.org/wiki/Perlin_(falconry))) is
 - Uses the display tree concept (see below) to render your scene.
 - Mouse and keyboard handling code included.
 - Desktop rendering using Veldrid and SDL2.
+- Can display parts of image regions as a simple texture atlas support.
 
 ## The display tree
 
@@ -20,7 +21,7 @@ The Z-order (what is rendered in front of what) is determined based on the posit
 
 ## License
 
-Copyright 2020- Matyas Forian Szabo
+Copyright 2020- Matyas Forian Szabo and code contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use files in this project except in compliance with the License.
