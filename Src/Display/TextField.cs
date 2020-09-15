@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using Veldrid;
@@ -23,7 +23,7 @@ namespace Perlin.Display
         private bool _needsTextureRedraw;
         private bool _needsTextureRecreate;
         private bool _autoSize;
-        private Rgba32 _fontColor = Rgba32.Black;
+        private Rgba32 _fontColor = Color.Black;
         private Rgba32 _backgroundColor = new Rgba32(255, 255, 255, 0);
         private HorizontalAlignment _horizontalAlign = HorizontalAlignment.Left;
         private VerticalAlignment _verticalAlign = VerticalAlignment.Top;
@@ -224,41 +224,69 @@ namespace Perlin.Display
         }
         
         /// <summary>
-        /// Called when text changes
+        /// Called when text changes. Draws the text into the internal texture.
         /// </summary>
         private unsafe void DrawText()
         {
             _needsTextureRedraw = false;
-            fixed (void* data = &MemoryMarshal.GetReference(_image.GetPixelSpan()))
+            if (Width == 0 || Height == 0)
+            {
+                return;
+            }
+            _image.TryGetSinglePixelSpan(out var span0);
+            fixed (void* data = &MemoryMarshal.GetReference(span0))
             {
                 Unsafe.InitBlock(data, 0, (uint)(_image.Width * _image.Height * 4));
             }
-            _image.Mutate(ctx =>
+            try
             {
-                if (_backgroundColor.A != 0)
+                _image.Mutate(ctx =>
                 {
-                    ctx.BackgroundColor(Color.FromRgba(_backgroundColor.R,
-                                                       _backgroundColor.G, 
-                                                       _backgroundColor.B,
-                                                       _backgroundColor.A));   
-                }
-                ctx.DrawText(
-                    new TextGraphicsOptions
+                    if (_backgroundColor.A != 0)
                     {
-                        WrapTextWidth = _image.Width, // TODO buggy! conflicts with alignment
-                        Antialias = true,
-                        HorizontalAlignment = HorizontalAlign, 
-                        VerticalAlignment = _verticalAlign
-                    },
-                    _text, _font, FontColor, new PointF());
-            });
-            fixed (void* data = &MemoryMarshal.GetReference(_image.GetPixelSpan()))
-            {
-                uint size = (uint)(_image.Width * _image.Height * 4);
-                PerlinApp.DefaultGraphicsDevice.UpdateTexture(Texture, 
-                    (IntPtr)data, size, 0, 0, 0, Texture.Width, Texture.Height,
-                    1, 0, 0);
+                        ctx.BackgroundColor(Color.FromRgba(_backgroundColor.R,
+                            _backgroundColor.G,
+                            _backgroundColor.B,
+                            _backgroundColor.A));
+                    }
+                    var textLoc = new PointF(0, 0);
+                    if (_verticalAlign == VerticalAlignment.Center)
+                    {
+                        textLoc.Y = _image.Height * 0.5f;
+                    }
+                    else if (_verticalAlign == VerticalAlignment.Bottom)
+                    {
+                        textLoc.Y = _image.Height;
+                    }
+                    ctx.DrawText(
+                        new TextGraphicsOptions
+                        {
+                            GraphicsOptions = new GraphicsOptions()
+                            {
+                                Antialias = true,
+                            },
+                            TextOptions = new TextOptions()
+                            {
+                                HorizontalAlignment = _horizontalAlign,
+                                VerticalAlignment = _verticalAlign,
+                                WrapTextWidth = _image.Width
+                            }
+                        },
+                        _text, _font, FontColor, textLoc);
+                });
             }
+            catch (ImageProcessingException ex)
+            {
+                // see https://github.com/SixLabors/ImageSharp.Drawing/issues/86
+                Console.WriteLine($"Could not render text '{_text}'. Perlin cannot render text with missing glyphs " +
+                                  $"from the font :(\n{ex}");
+            }
+            //_image.SaveAsPng("eerrff.png"); // to test
+            _image.TryGetSinglePixelSpan(out var span);
+            PerlinApp.DefaultGraphicsDevice.UpdateTexture(Texture, 
+                span.ToArray(),
+                0, 0, 0, Texture.Width, Texture.Height,
+                1, 0, 0);
         }
 
         /// <summary>

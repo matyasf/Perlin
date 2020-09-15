@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using Veldrid;
 using Veldrid.ImageSharp;
@@ -29,9 +28,9 @@ namespace Perlin
             if (!_loadedImages.TryGetValue((imagePath, mipmap), out (ResourceSet, Texture) ret))
             {
                 GraphicsDevice gd = PerlinApp.DefaultGraphicsDevice;
-                //var imTex = new ImageSharpTexture(imagePath, false); // does not work because we use the latest Imagesharp!
-                Image<Rgba32> im = Image.Load<Rgba32>(imagePath);
-                var imTex = new ImageSharpTexture(im, mipmap);
+                var imTex = new ImageSharpTexture(imagePath, mipmap);
+                //Image<Rgba32> im = Image.Load<Rgba32>(imagePath); // alternative way
+                //ImageSharpTexture imTex = new ImageSharpTexture(im, mipmap);
                 var tex = imTex.CreateDeviceTexture(gd, gd.ResourceFactory);
                 var view = gd.ResourceFactory.CreateTextureView(tex);
                 ResourceSet set = gd.ResourceFactory.CreateResourceSet(new ResourceSetDescription(

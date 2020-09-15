@@ -14,8 +14,8 @@ namespace Perlin.Display
         private readonly TextField _values;
         private int _frameCount;
         private float _totalTime;
-        private const uint ComponentWidth = 90;
-        private const uint ComponentHeight = 48;
+        private const uint ComponentWidth = 95;
+        private const uint ComponentHeight = 53;
         
         public float Fps;
         public float Memory;
@@ -29,14 +29,14 @@ namespace Perlin.Display
         {
             const string gpuLabel = "\ngpu memory:";
             const string labels = "frames/sec:\nstd memory:" + gpuLabel + "\ndraw calls:";
-            var font = PerlinApp.FontRobotoMono.CreateFont(9);
+            var font = PerlinApp.FontRobotoMono.CreateFont(10);
 
             var leftText = new TextField(font, labels, false)
             {
                 Width = ComponentWidth - 2,
                 Height = ComponentHeight,
                 HorizontalAlign = HorizontalAlignment.Left,
-                X = 2
+                X = 1
             };
 
             _values = new TextField(font, null, false)
@@ -94,8 +94,9 @@ namespace Perlin.Display
             string gpuMemText = GpuMemory < 100 ? GpuMemory.ToString("N1") : GpuMemory.ToString("N0");
             string drwText = PerlinApp.Renderer.DrawCount > 2 ? (PerlinApp.Renderer.DrawCount - 3).ToString() : "0"; // ignore self
 
-            _values.Text = fpsText + "\n" + memText + "\n" +
-                           (GpuMemory >= 0 ? gpuMemText + "\n" : "") + drwText;
+            string abcs = fpsText + "\n" + memText + "\n" +
+                     (GpuMemory > 0 ? $"{gpuMemText}\n" : "??\n") + drwText;
+            _values.Text = abcs;
         }
 
         /// <summary>

@@ -22,10 +22,6 @@ namespace Perlin
     /// </summary>
     public static class PerlinApp
     {
-        // bug ImageSharp beta7: if text overflows it'll throw an exception, see
-        // https://github.com/SixLabors/ImageSharp/issues/688
-        // As a workaround this project uses a nightly build.
-        
         /// <summary>
         /// The engine's image manager. You can use this to load images to your project.
         /// </summary>
@@ -59,7 +55,8 @@ namespace Perlin
         {
             get
             {
-                if (_fontRobotoMono == null)
+                // workaround, was `_fontRobotoMono == null` see https://github.com/SixLabors/Fonts/issues/143
+                if (ReferenceEquals(_fontRobotoMono, null))
                 {
                     _fontRobotoMono = Fonts.Install(PerlinUtils.LoadEmbeddedResourceAsString("RobotoMono-Regular.ttf"));
                 }
@@ -140,8 +137,8 @@ namespace Perlin
                 _statsDisplay = new StatsDisplay();
                 //_statsDisplay.Touchable = false;
             }
-
-            Stage.AddChild(_statsDisplay);
+            
+            Stage.AddChild(_statsDisplay);// TODO now things can be added above it, prevent this
             _statsDisplay.ScaleX = _statsDisplay.ScaleY = scale;
 
             if (horizontalAlign == HorizontalAlignment.Left) _statsDisplay.X = 0f;

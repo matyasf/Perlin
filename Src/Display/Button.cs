@@ -1,5 +1,5 @@
 using SixLabors.Fonts;
-using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
 
 namespace Perlin.Display
 {
@@ -25,9 +25,9 @@ namespace Perlin.Display
             _label = new TextField(font, text, autoSize);
             _label.MouseOrTouchEnabled = false;
             
-            UpGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Rgba32.Beige);
-            HoverGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Rgba32.LightGray);
-            DownGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Rgba32.DarkGray);
+            UpGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Color.Beige);
+            HoverGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Color.LightGray);
+            DownGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Color.DarkGray);
 
             _label.X = 5;
             _label.Y = 3;
