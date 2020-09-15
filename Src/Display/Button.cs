@@ -25,12 +25,12 @@ namespace Perlin.Display
             _label = new TextField(font, text, autoSize);
             _label.MouseOrTouchEnabled = false;
             
-            UpGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Color.Beige);
-            HoverGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Color.LightGray);
-            DownGraphic = new Sprite(_label.Width + 10, _label.Height + 6, Color.DarkGray);
+            UpGraphic = new Sprite(_label.Width + 10, _label.Height + 7, Color.Beige);
+            HoverGraphic = new Sprite(_label.Width + 10, _label.Height + 7, Color.LightGray);
+            DownGraphic = new Sprite(_label.Width + 10, _label.Height + 7, Color.DarkGray);
 
             _label.X = 5;
-            _label.Y = 3;
+            _label.Y = 0;
             AddChild(_label);
 
             OriginalWidth = _label.Width + 10;

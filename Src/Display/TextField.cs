@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -23,16 +24,16 @@ namespace Perlin.Display
         private bool _needsTextureRedraw;
         private bool _needsTextureRecreate;
         private bool _autoSize;
-        private Rgba32 _fontColor = Color.Black;
-        private Rgba32 _backgroundColor = new Rgba32(255, 255, 255, 0);
+        private Color _fontColor = Color.Black;
+        private Rgba32 _backgroundColor = Color.FromRgba(255, 255, 255, 0);
         private HorizontalAlignment _horizontalAlign = HorizontalAlignment.Left;
         private VerticalAlignment _verticalAlign = VerticalAlignment.Top;
-
+        
         /// <summary>
         /// Gets or sets a value indicating when a text should wrap.
         /// Default is 0, in this case no automatic wrapping will happen.
         /// </summary>
-//        public float WrapTextWidth = 0;
+        //public float WrapTextWidth = 0;
         
         private Texture Texture { get; set; }
 
@@ -126,9 +127,9 @@ namespace Perlin.Display
         }
 
         /// <summary>
-        /// The color of the displayed font, default is <code>Rgba32.Black</code>
+        /// The color of the displayed font, default is <code>Color.Black</code>
         /// </summary>
-        public Rgba32 FontColor
+        public Color FontColor
         {
             get => _fontColor;
             set
@@ -167,7 +168,7 @@ namespace Perlin.Display
         /// <summary>
         /// The background color for this TextField. Default is Rgba32(255, 255, 255, 0);
         /// </summary>
-        public Rgba32 BackgroundColor
+        public Color BackgroundColor
         {
             get => _backgroundColor;
             set
@@ -211,14 +212,17 @@ namespace Perlin.Display
 
         public override void Render(float elapsedTimeSecs)
         {
-            if (_needsTextureRecreate)
+            if (!string.IsNullOrEmpty(_text) && Width > 0 && Height > 0 && Visible)
             {
-                RecreateTexture();
-                DrawText();
-            }
-            if (_needsTextureRedraw)
-            {
-                DrawText();
+                if (_needsTextureRecreate)
+                {
+                    RecreateTexture();
+                    DrawText();
+                }
+                if (_needsTextureRedraw)
+                {
+                    DrawText();
+                }
             }
             base.Render(elapsedTimeSecs);
         }
@@ -244,11 +248,28 @@ namespace Perlin.Display
                 {
                     if (_backgroundColor.A != 0)
                     {
-                        ctx.BackgroundColor(Color.FromRgba(_backgroundColor.R,
-                            _backgroundColor.G,
-                            _backgroundColor.B,
-                            _backgroundColor.A));
+                        ctx.BackgroundColor(_backgroundColor);
                     }
+                    /*
+                    // alternate method: convert to vector and measure it. Not nice because each text might have a 
+                    // different height
+                    var style = new RendererOptions(_font);
+                    // Renders the glyphs to a vector instead of directly to the image
+                    IPathCollection glyphs = TextBuilder.GenerateGlyphs(_text, style);
+                    var bounds = glyphs.Bounds;
+                    glyphs = glyphs.Translate(-bounds.Location);
+                    if (HorizontalAlign == HorizontalAlignment.Center)
+                    {
+                        glyphs = glyphs.Translate((Width - bounds.Width) * 0.5f, 0);
+                    }
+                    else if (HorizontalAlign == HorizontalAlignment.Right)
+                    {
+                        glyphs = glyphs.Translate((Width - bounds.Width), 0);
+                    }
+                    //... and for vertical
+                    var gOpt = new ShapeGraphicsOptions();
+                    ctx.Fill(gOpt, FontColor, glyphs);
+                    */
                     var textLoc = new PointF(0, 0);
                     if (_verticalAlign == VerticalAlignment.Center)
                     {
@@ -298,13 +319,17 @@ namespace Perlin.Display
             {
                 return new Point();
             }
-            var size =  TextMeasurer.Measure(_text, new RendererOptions(_font));
-            return new Point( (float)Math.Ceiling(size.Width),  (float)Math.Ceiling(size.Height) );
+            RendererOptions style = new RendererOptions(_font);
+            // Method1: Renders the glyphs to a vector instead of directly to the image
+            //IPathCollection glyphs = TextBuilder.GenerateGlyphs(_text, style);
+            //return new Point((float)Math.Ceiling(glyphs.Bounds.Width), (float)Math.Ceiling(glyphs.Bounds.Height));
+            var fontRectangle = TextMeasurer.MeasureBounds(_text, style);
+            return new Point((float)Math.Ceiling(fontRectangle.Right), (float)Math.Ceiling(fontRectangle.Bottom));
         }
 
         public override string ToString()
         {
-            if (_text.Length > 10)
+            if (_text != null && _text.Length > 10)
             {
                 return "[TextField text:" + _text.Substring(0, 10) + "]";   
             }
