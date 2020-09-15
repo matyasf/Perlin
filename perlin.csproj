@@ -5,7 +5,7 @@
         <RootNamespace></RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<PackageId>Matyasf.Perlin</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.1.0</Version>
         <Authors>Matyas Forian Szabo and Github contributors</Authors>
 		<Title>Perlin game engine</Title>
 		<PackageDescription>Perlin is a lightweight crossplatform 2D game engine</PackageDescription>
