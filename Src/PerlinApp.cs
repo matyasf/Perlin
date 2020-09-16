@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Perlin.Display;
 using Perlin.Rendering;
 using SixLabors.Fonts;
@@ -8,7 +9,6 @@ using SixLabors.ImageSharp.Memory;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
-using Path = System.IO.Path;
 
 namespace Perlin
 {
@@ -79,7 +79,12 @@ namespace Perlin
                 null,
                 true,
                 ResourceBindingModel.Improved);
-            //options.PreferStandardClipSpaceYDirection = true;
+            // If this is not here on my laptop (Nvidia 1050, Ubuntu proprietary drivers) the window is mirrored
+            // TODO this needs more testing
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                options.PreferStandardClipSpaceYDirection = true;
+            }
             Start(width, height, windowTitle, onInit, options);
         }
         
@@ -97,22 +102,31 @@ namespace Perlin
             Configuration.Default.MemoryAllocator = new SimpleGcMemoryAllocator();
             Window = new Sdl2Window(windowTitle, 50, 50, width, height, SDL_WindowFlags.OpenGL, false);
             DefaultGraphicsDevice = VeldridStartup.CreateGraphicsDevice(Window, options);
+            Console.WriteLine("Starting Perlin using " + DefaultGraphicsDevice.BackendType);
             CommandList = DefaultGraphicsDevice.ResourceFactory.CreateCommandList();
             Window.Resized += () => DefaultGraphicsDevice.ResizeMainWindow((uint)Window.Width, (uint)Window.Height);
             Pipeline = new PerlinPipeline(DefaultGraphicsDevice);
             Renderer = new BatchRenderer();
             Stopwatch sw = Stopwatch.StartNew();
-            double previousTime = sw.Elapsed.TotalSeconds;
             Stage = new Stage(width, height);
             onInit.Invoke();
+            
+            long previousFrameTicks = 0;
+            double desiredFrameLengthSeconds = 1.0 / 60.0;
             // The main loop. This gets repeated every frame.
             while (Window.Exists)
             {
+                long currentFrameTicks = sw.ElapsedTicks;
+                double deltaSeconds = (currentFrameTicks - previousFrameTicks) / (double)Stopwatch.Frequency;
+                while (deltaSeconds < desiredFrameLengthSeconds)
+                {
+                    currentFrameTicks = sw.ElapsedTicks;
+                    deltaSeconds = (currentFrameTicks - previousFrameTicks) / (double)Stopwatch.Frequency;
+                }
+                previousFrameTicks = currentFrameTicks;
+                
                 InputSnapshot snapshot = Window.PumpEvents();
-                double newTime = sw.Elapsed.TotalSeconds;
-                double elapsed = newTime - previousTime;
-                previousTime = newTime;
-                KeyboardInput.UpdateFrameInput(snapshot, newTime);
+                KeyboardInput.UpdateFrameInput(snapshot, sw.Elapsed.TotalSeconds);
                 if (Window.Exists)
                 {
                     CommandList.Begin();
@@ -123,7 +137,7 @@ namespace Perlin
                         Stage.BackgroundColor.B/255f,
                         1));
                     // adds elements to the render queue using a helper render state stack
-                    Stage.Render((float)elapsed);
+                    Stage.Render((float)deltaSeconds);
                     // iterates the render queue and send it to the GPU for rendering
                     Renderer.RenderQueue();
                     CommandList.End();
