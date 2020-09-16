@@ -279,6 +279,8 @@ namespace Perlin.Display
                     {
                         textLoc.Y = _image.Height;
                     }
+                    // If auto sizing let it grow as big as the text, do not wrap
+                    var wrapTextWidth = AutoSize ? 0 : _image.Width;
                     ctx.DrawText(
                         new TextGraphicsOptions
                         {
@@ -290,7 +292,7 @@ namespace Perlin.Display
                             {
                                 HorizontalAlignment = _horizontalAlign,
                                 VerticalAlignment = _verticalAlign,
-                                WrapTextWidth = _image.Width
+                                WrapTextWidth = wrapTextWidth
                             }
                         },
                         _text, _font, FontColor, textLoc);
@@ -331,7 +333,7 @@ namespace Perlin.Display
         {
             if (_text != null && _text.Length > 10)
             {
-                return "[TextField text:" + _text.Substring(0, 10) + "]";   
+                return "[TextField text:" + _text.Substring(0, 10) + "..]";   
             }
             return "[TextField text:" + _text + "]";
         }
