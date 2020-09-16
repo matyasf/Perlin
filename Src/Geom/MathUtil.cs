@@ -24,8 +24,8 @@ namespace Perlin.Geom
         {
             for (int i = 0; i < 2048; i++)
             {
-                SinLUT[i & 2047] = (float)System.Math.Sin(i * 0.00306796157577128245943617517898f); //0.003067 = 2PI/2048
-                CosLUT[i & 2047] = (float)System.Math.Cos(i * 0.00306796157577128245943617517898f);
+                SinLUT[i & 2047] = (float)Math.Sin(i * 0.00306796157577128245943617517898f); //0.003067 = 2PI/2048
+                CosLUT[i & 2047] = (float)Math.Cos(i * 0.00306796157577128245943617517898f);
             }
         }
 

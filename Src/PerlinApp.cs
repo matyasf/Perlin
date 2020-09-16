@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using Perlin.Display;
 using Perlin.Rendering;
 using SixLabors.Fonts;
@@ -79,9 +78,7 @@ namespace Perlin
                 null,
                 true,
                 ResourceBindingModel.Improved);
-            // If this is not here on my laptop (Nvidia 1050, Ubuntu proprietary drivers) the window is mirrored
-            // TODO this needs more testing
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            if (VeldridStartup.GetPlatformDefaultBackend() == GraphicsBackend.Vulkan)
             {
                 options.PreferStandardClipSpaceYDirection = true;
             }

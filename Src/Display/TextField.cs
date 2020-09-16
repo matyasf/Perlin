@@ -13,7 +13,9 @@ using Point = Perlin.Geom.Point;
 namespace Perlin.Display
 {
     /// <summary>
-    /// TextField is used to render text. Make sure its big enough for your text otherwise it will not show!
+    /// TextField is used to render text. By default it will resize itself to the text it displays, you can
+    /// disable this by setting <code>AutoSize</code> to false.
+    /// Make sure its big enough for your text otherwise the text will not show!
     /// </summary>
     public class TextField : DisplayObject
     {
@@ -28,13 +30,7 @@ namespace Perlin.Display
         private Rgba32 _backgroundColor = Color.FromRgba(255, 255, 255, 0);
         private HorizontalAlignment _horizontalAlign = HorizontalAlignment.Left;
         private VerticalAlignment _verticalAlign = VerticalAlignment.Top;
-        
-        /// <summary>
-        /// Gets or sets a value indicating when a text should wrap.
-        /// Default is 0, in this case no automatic wrapping will happen.
-        /// </summary>
-        //public float WrapTextWidth = 0;
-        
+
         private Texture Texture { get; set; }
 
         /// <summary>

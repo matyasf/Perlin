@@ -2,16 +2,17 @@
 
 Perlin (named from a [bird](https://en.wikipedia.org/wiki/Perlin_(falconry))) is a lightweight 2D graphics engine for .NET Core using [Veldrid](https://veldrid.dev/). It's well documented, has a simple architecture and is meant to be more as a base code for your engine than something that does everything out-of-the-box.
 
-Currently its working on Windows and OSX, in the near future I plan to get it work on Linux, Android and iOS.
+Currently its working on Windows, OSX, Linux, in the near future I plan to get it work on Android and iOS.
 
 ## Features
 
+- Uses the display tree concept (see below) to render your scene.
+- Simple text rendering included.
+- Mouse and keyboard handling code included.
+- Can display parts of image regions as a simple texture atlas support.
+- Desktop window management via SDL2.
 - Thanks to Veldrid it automatically chooses the ideal rendering backend for your PC (Vulkan/Metal/OpenGL/DirectX..)
 - Loads images via [ImageSharp](https://github.com/SixLabors/ImageSharp), so common formats (jpg, png, bmp, gif) are supported.
-- Uses the display tree concept (see below) to render your scene.
-- Mouse and keyboard handling code included.
-- Desktop rendering using Veldrid and SDL2.
-- Can display parts of image regions as a simple texture atlas support.
 
 ## The display tree
 
@@ -32,7 +33,7 @@ using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Snake_Game
+namespace Hello
 {
     public class HelloWorld
     {
@@ -61,6 +62,7 @@ namespace Snake_Game
             var sp = new Sprite(40, 40, Color.Gold);
             sp.X = 50;
             sp.Y = 50;
+            // the EnterFrameEvent fires in each frame
             sp.EnterFrameEvent += (target, secs) => sp.Rotation++;
             PerlinApp.Stage.AddChild(sp);
         }

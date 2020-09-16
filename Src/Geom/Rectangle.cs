@@ -283,9 +283,9 @@ namespace Perlin.Geom
                 var sPoint = matrix.TransformPoint(positions[i]);
 
                 if (minX > sPoint.X) minX = sPoint.X;
-                if (maxX<sPoint.X) maxX = sPoint.X;
+                if (maxX < sPoint.X) maxX = sPoint.X;
                 if (minY > sPoint.Y) minY = sPoint.Y;
-                if (maxY<sPoint.Y) maxY = sPoint.Y;
+                if (maxY < sPoint.Y) maxY = sPoint.Y;
             }
 
             outRect.SetTo(minX, minY, maxX - minX, maxY - minY);
