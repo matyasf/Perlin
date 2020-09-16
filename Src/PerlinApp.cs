@@ -63,7 +63,7 @@ namespace Perlin
                 return _fontRobotoMono;
             }
         }
-        
+
         /// <summary>
         /// Starts you application. Call this method once when you want to start your app.
         /// </summary>
@@ -74,16 +74,28 @@ namespace Perlin
         /// you can add things to the stage, add event listeners etc.</param>
         public static void Start(int width, int height, string windowTitle, Action onInit)
         {
-            Configuration.Default.MemoryAllocator = new SimpleGcMemoryAllocator();
-            GraphicsDeviceOptions options = new GraphicsDeviceOptions();
-            Window = new Sdl2Window(windowTitle, 50, 50, width, height, SDL_WindowFlags.OpenGL, false);
-
-            options.Debug = true;
-
-            options.SyncToVerticalBlank = true;
-            options.ResourceBindingModel = ResourceBindingModel.Improved;
+            GraphicsDeviceOptions options = new GraphicsDeviceOptions(
+                true,
+                null,
+                true,
+                ResourceBindingModel.Improved);
             //options.PreferStandardClipSpaceYDirection = true;
-            
+            Start(width, height, windowTitle, onInit, options);
+        }
+        
+        /// <summary>
+        /// Starts you application. Call this method once when you want to start your app.
+        /// </summary>
+        /// <param name="width">The app window's width</param>
+        /// <param name="height">The app window's height</param>
+        /// <param name="windowTitle">The app window's title</param>
+        /// <param name="onInit">Method to call when the app started. At this point the app is ready,
+        /// you can add things to the stage, add event listeners etc.</param>
+        /// <param name="options">Specify your own graphics device options.</param>
+        public static void Start(int width, int height, string windowTitle, Action onInit, GraphicsDeviceOptions options)
+        {
+            Configuration.Default.MemoryAllocator = new SimpleGcMemoryAllocator();
+            Window = new Sdl2Window(windowTitle, 50, 50, width, height, SDL_WindowFlags.OpenGL, false);
             DefaultGraphicsDevice = VeldridStartup.CreateGraphicsDevice(Window, options);
             CommandList = DefaultGraphicsDevice.ResourceFactory.CreateCommandList();
             Window.Resized += () => DefaultGraphicsDevice.ResizeMainWindow((uint)Window.Width, (uint)Window.Height);

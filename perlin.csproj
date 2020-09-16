@@ -1,16 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
-        <RootNamespace></RootNamespace>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>Perlin</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<PackageId>Matyasf.Perlin</PackageId>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <Authors>Matyas Forian Szabo and Github contributors</Authors>
 		<Title>Perlin game engine</Title>
 		<PackageDescription>Perlin is a lightweight crossplatform 2D game engine</PackageDescription>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageTags>game;2D;library;engine;veldrid</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageProjectUrl></PackageProjectUrl>
+		<RepositoryUrl>https://github.com/matyasf/Perlin</RepositoryUrl>
+		<PackageReleaseNotes>Add ability to specify own GraphicsDeviceOptions on startup</PackageReleaseNotes>
+		<Description>Perlin (named from a bird) is a lightweight 2D graphics engine for .NET Core using Veldrid.</Description>
     </PropertyGroup>
 
     <ItemGroup>
