@@ -48,7 +48,7 @@ namespace Perlin.Display
         
         internal Stage(int width, int height)
         {
-            IsOnStageProperty = true;
+            _isOnStage = true;
             OriginalWidth = width;
             OriginalHeight = height;
             Name = "Stage";

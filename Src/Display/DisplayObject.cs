@@ -79,21 +79,24 @@ namespace Perlin.Display
         /// </summary>
         public bool Visible = true;
         
-        internal Rectangle TextureSubRegionNormalized = new Rectangle(0,0,1,1); // Shaders need it in 0..1 coordinates.
-
         /// <summary>
-        /// The sub-region of this object's Texture to render. If set to null or there is no <code>ResSet</code>,
-        /// its ignored. Should have an greater than 0 area, and the Rectangle should be inside the Texture's borders.
+        /// The region of this object's texture to render. Shaders need this in 0..1 coordinates.
         /// </summary>
-        internal Rectangle TextureSubRegion;
-
+        internal Rectangle TextureSubRegionNormalized = new Rectangle(0,0,1,1);
+        
         private float _pivotX;
         private float _pivotY;
         private float _scaleX = 1.0f;
         private float _scaleY = 1.0f;
 
         /// <summary>
-        /// The GPU resource set for this object. This is used for rendering, if its null, the object cannot be rendered.
+        /// The GPU resource set for this object. In a way it holds a reference to the texture that is on the GPU
+        /// and this object will use for rendering. This contains the following:
+        /// <list type="bullet">
+        /// <item><description>Its ResourceLayout, this holds the shader uniform names and positions</description></item>
+        /// <item><description>The resources that its shader can access (stuff like buffers, textures)</description></item>
+        /// </list>
+        /// This is used for rendering, if its null, the object cannot be rendered.
         /// </summary>
         public ResourceSet ResSet;
         private readonly Matrix2D _transformationMatrix;
@@ -140,19 +143,19 @@ namespace Perlin.Display
             MouseClick?.Invoke(this, mousePosition, MouseButton.Left);
         }
 
-        protected bool IsOnStageProperty;
+        protected bool _isOnStage;
         /// <summary>
         /// Whether this instance is connected to the Stage (= itself or one its parent/grandparent/.. is on the Stage).
         /// If something is not on the Stage, it will not render.
         /// </summary>
         public bool IsOnStage
         {
-            get => IsOnStageProperty;
+            get => _isOnStage;
             internal set
             {
-                if (value != IsOnStageProperty)
+                if (value != _isOnStage)
                 {
-                    IsOnStageProperty = value;
+                    _isOnStage = value;
                     if (value)
                     {
                         AddedToStage?.Invoke(this);
@@ -172,7 +175,7 @@ namespace Perlin.Display
         /// <param name="elapsedTimeSecs">The elapsed time in seconds since the last render call.</param>
         public virtual void Render(float elapsedTimeSecs)
         {
-            if (IsOnStageProperty)
+            if (_isOnStage)
             {
                 InvokeEnterFrameEvent(elapsedTimeSecs);
             }
@@ -195,7 +198,6 @@ namespace Perlin.Display
         public virtual DisplayObject Parent { get; internal set; }
 
         private float _x;
-        
         /// <summary>
         /// The X coordinate of this object. The actual position is offset by the PivotX and PivotY values.
         /// </summary>
@@ -544,7 +546,7 @@ namespace Perlin.Display
 
         /// <summary>
         /// The horizontal scale of the object. 1 (the default) represents no scaling, 2 is scaled to 2x,
-        /// negative values mirror the object (currently buggy!)
+        /// negative values mirror the object
         /// </summary>
         public float ScaleX
         {
@@ -673,7 +675,7 @@ namespace Perlin.Display
                 child.RemoveFromParent();
             }
             Children.Insert(index, child);
-            if (IsOnStageProperty)
+            if (_isOnStage)
             {
                 child.IsOnStage = true;
             }

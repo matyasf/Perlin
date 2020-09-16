@@ -11,6 +11,9 @@ namespace Perlin.Rendering
         public Pipeline Pipeline { get; private set; }
         public ResourceLayout TexLayout { get; private set; }
         public ResourceSet OrthoSet { get; private set; }
+        /// <summary>
+        /// The main projection matrix. Does not change since the camera is fixed.
+        /// </summary>
         public DeviceBuffer OrthoBuffer { get; private set; }
         
         public PerlinPipeline(GraphicsDevice gd)
