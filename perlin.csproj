@@ -2,12 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>Perlin</RootNamespace>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<PackageId>Matyasf.Perlin</PackageId>
         <Version>1.2.0</Version>
+		<RootNamespace>Perlin</RootNamespace>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>Matyas Forian Szabo and Github contributors</Authors>
 		<Title>Perlin game engine</Title>
+		<Description>Perlin is a lightweight 2D graphics engine for .NET Core using Veldrid.</Description>
 		<PackageDescription>Perlin is a lightweight crossplatform 2D game engine</PackageDescription>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageTags>game;2D;library;engine;veldrid</PackageTags>
@@ -15,9 +16,15 @@
 		<PackageProjectUrl></PackageProjectUrl>
 		<RepositoryUrl>https://github.com/matyasf/Perlin</RepositoryUrl>
 		<PackageReleaseNotes>Linux support;
-		Fix text sometimes getting cropped when autosizing</PackageReleaseNotes>
-		<Description>Perlin is a lightweight 2D graphics engine for .NET Core using Veldrid.</Description>
+Fix text sometimes getting cropped when autosizing</PackageReleaseNotes>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+	</ItemGroup>
 
     <ItemGroup>
       <None Remove="Src\Assets\RobotoMono-Regular.ttf" />
