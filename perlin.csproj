@@ -5,7 +5,7 @@
         <RootNamespace>Perlin</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<PackageId>Matyasf.Perlin</PackageId>
-        <Version>1.1.1</Version>
+        <Version>1.2.0</Version>
         <Authors>Matyas Forian Szabo and Github contributors</Authors>
 		<Title>Perlin game engine</Title>
 		<PackageDescription>Perlin is a lightweight crossplatform 2D game engine</PackageDescription>
@@ -14,8 +14,9 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageProjectUrl></PackageProjectUrl>
 		<RepositoryUrl>https://github.com/matyasf/Perlin</RepositoryUrl>
-		<PackageReleaseNotes>Add ability to specify own GraphicsDeviceOptions on startup</PackageReleaseNotes>
-		<Description>Perlin (named from a bird) is a lightweight 2D graphics engine for .NET Core using Veldrid.</Description>
+		<PackageReleaseNotes>Linux support;
+		Fix text sometimes getting cropped when autosizing</PackageReleaseNotes>
+		<Description>Perlin is a lightweight 2D graphics engine for .NET Core using Veldrid.</Description>
     </PropertyGroup>
 
     <ItemGroup>

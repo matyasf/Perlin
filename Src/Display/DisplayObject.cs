@@ -75,7 +75,8 @@ namespace Perlin.Display
         public string Name = "DisplayObject";
         
         /// <summary>
-        /// Sets the visibility of an object.
+        /// Sets the visibility of an object and its children. If something is not visible it will not render, but if
+        /// its on the Stage it will still fire the `EnterFrameEvent` event.
         /// </summary>
         public bool Visible = true;
         
@@ -169,7 +170,7 @@ namespace Perlin.Display
         }
         
         /// <summary>
-        /// Renders the object. You do not need to call this, the engine calls it on every frame while
+        /// Renders the object and its children. Do not call this, the engine calls it on every frame while
         /// this is on the Stage.
         /// </summary>
         /// <param name="elapsedTimeSecs">The elapsed time in seconds since the last render call.</param>
@@ -304,7 +305,7 @@ namespace Perlin.Display
 
         /// <summary>
         /// Returns this or one of its children (or grandchildren..) that is found topmost on the given point in local coordinates.
-        /// Returns null if there is nothing.
+        /// If there is nothing, it returns the Stage if its on the Stage otherwise <c>null</c>.
         /// </summary>
         public virtual DisplayObject HitTest(Point p)
         {

@@ -53,7 +53,7 @@ namespace Perlin.Display
             OriginalHeight = height;
             Name = "Stage";
         }
-
+        
         public override DisplayObject HitTest(Point p)
         {
             // if nothing else is hit, the stage returns itself as target
@@ -114,7 +114,7 @@ namespace Perlin.Display
         
         /// <summary>
         /// Renders all its children recursively.
-        /// </summary>>
+        /// </summary>
         public override void Render(float elapsedTimeSecs)
         {
             InvokeEnterFrameEvent(elapsedTimeSecs);

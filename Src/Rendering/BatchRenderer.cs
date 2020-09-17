@@ -52,8 +52,9 @@ namespace Perlin.Rendering
                 uint batchStart = (uint)i;
                 ResourceSet rs = _renderQueue[i].ResSet;
                 cl.SetGraphicsResourceSet(1, rs);
-                // + textField needs here an extra UpdateBuffer call?
-                // cl.UpdateBuffer(_textBuffer, 0, toDraw[0].GpuVertex);
+                // textField needs here an extra UpdateBuffer call? cl.UpdateBuffer(_textBuffer, 0, toDraw[0].GpuVertex);
+
+                // Render objects that use the same ResourceSet and come after each other in one draw call
                 uint batchSize = 0;
                 do
                 {
@@ -77,9 +78,17 @@ namespace Perlin.Rendering
             }
         }
         
+        /// <summary>
+        /// Calculates the current render state for the given object. This is based on the current object's
+        /// state (position, rotation,..) and its parent objects state.
+        /// So it basically contains the final values for the object that are needed for rendering
+        /// (its position and rotation relative to the window, its final alpha and scale value) 
+        /// The render state then gets pushed to the render queue which gets processed as a whole on each frame. 
+        /// </summary>
+        /// <param name="displayObject">The displayObject whose RenderState needs to be calculated</param>
         public void PushRenderState(DisplayObject displayObject)
         {
-            // this function gets called for every renderable object TODO: in the future use an object pool for renderState
+            // TODO: in the future use an object pool for this, it gets created once for every renderable object on each frame
             var renderState = new RenderState();
             renderState.SetValues(_renderStates.Peek(), displayObject);
             _renderStates.Push(renderState);

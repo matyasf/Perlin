@@ -133,9 +133,9 @@ namespace Perlin
                         Stage.BackgroundColor.G/255f,
                         Stage.BackgroundColor.B/255f,
                         1));
-                    // adds elements to the render queue using a helper render state stack
+                    // Adds elements to the render queue using a helper render state stack
                     Stage.Render((float)deltaSeconds);
-                    // iterates the render queue and send it to the GPU for rendering
+                    // Iterates the render queue and sends it to the GPU for rendering
                     Renderer.RenderQueue();
                     CommandList.End();
                     DefaultGraphicsDevice.SubmitCommands(CommandList);
